@@ -1,0 +1,30 @@
+﻿@model Vendor
+
+
+<div class="container-fluid" style="padding-top: 100px">
+
+    <div class="container">
+        <h1 style="text-align:center"> Create Vendor</h1>
+    </div>
+
+    <div class="container-fluid">
+
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="row pt-5 container">
+                <div class="form-group col-4">
+                    <label asp-for="ImageFile">Image</label>
+                    <input asp-for="ImageFile" class="form-control text-white">
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="container text-center pt-5">
+                <button type="submit" class="btn btn-outline-primary">Create</button>
+                <a class="btn btn-outline-danger" asp-action="index" asp-controller="vendor">Cancel</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+

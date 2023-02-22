@@ -1,0 +1,92 @@
+﻿@model PaginatedList<Category>
+
+@{
+
+    int counter = (Model.CurrentPage - 1) * Model.ElementInPage;
+}
+
+
+<div class="container-fluid" style="padding-top: 100px">
+
+    <div class="container">
+        <h1 style="text-align:center">Categories</h1>
+       @* <a asp-action="create" asp-controller="category" class="btn btn-outline-success">Create</a>*@
+    </div>
+
+    <div class="container-fluid">
+
+
+
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    @*<th scope="col">#</th>*@
+                    <th scope="col"> <a style="font-size:25px" asp-action="create" asp-controller="category"><i title="create" class="mdi mdi-plus-circle text-success"></i></a></th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Created Date</th>
+                    <th scope="col">Updated Date</th>
+                    <th scope="col">Deleted</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@(++counter)</th>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td><img style="width:70px;height:70px" src="~/uploads/category/@item.ImageUrl" alt="@item.Name"/></td>
+                        <td>@item.CreatedTime</td>
+                        <td>@(item.ModifiedTime is null ? "not modified yet" : item.ModifiedTime)</td>
+                        <td>@item.IsDeleted</td>
+                        <td>
+                            <div>
+                                <a style="font-size:25px" asp-action="delete" asp-controller="category" asp-route-id="@item.Id"><i title="hard-delete" style="width:100px;height:100px" class="mdi mdi-delete-forever text-danger"></i></a>
+                                <a style="font-size:25px" asp-action="update" asp-controller="category" asp-route-id="@item.Id"><i title="edit" class="mdi mdi-lead-pencil text-primary"></i></a>
+                                @if(item.IsDeleted != true)
+                                {
+                                    <a style="font-size:25px" asp-action="softdelete" asp-controller="category" asp-route-id="@item.Id"><i title="soft-delete" class="mdi mdi-delete-empty text-warning"></i></a>
+                                }
+                                else
+                                {
+                                    <a style="font-size:25px" asp-action="getback" asp-controller="category" asp-route-id="@item.Id"><i title="getback" class="mdi mdi-import text-warning"></i></a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <div class="pt-3 pb-3">
+    <form method="get">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPrevious is true ? "" : "disabled")">
+                        <a class="page-link text-white" asp-action="index" asp-route-page="@(Model.HasPrevious is true ? (Model.CurrentPage-1) : "")">Previous</a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="page-item @(i==Model.CurrentPage? "active" : "")"><a class="page-link text-white" asp-action="index" asp-route-page="@i">@i</a></li>
+                }
+
+                <li class="page-item @(Model.HasNext is true ? "" : "disabled") ">
+                        <a class="page-link text-white" asp-action="index" asp-route-page="@(Model.HasNext is true ? (Model.CurrentPage+1) : "")">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </form>
+    </div>
+
+
+</div>
